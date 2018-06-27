@@ -1,0 +1,28 @@
+{
+    "name": "ohre-client",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@types/react-router-dom": "^4.2.7",
+        "axios": "^0.18.0",
+        "react": "^16.4.1",
+        "react-dom": "^16.4.1",
+        "react-router-dom": "^4.3.1",
+        "react-scripts-ts": "*",
+        "redux": "^4.0.0",
+        "webpack-dev-server": "^3.1.4"
+    },
+    "scripts": {
+        "start": "set PORT=8000 && react-scripts-ts start",
+        "build": "react-scripts-ts build",
+        "test": "react-scripts-ts --env=jsdom",
+        "eject": "react-scripts-ts eject"
+    },
+    "devDependencies": {
+        "@types/jest": "^23.1.2",
+        "@types/node": "^10.3.6",
+        "@types/react": "^16.4.2",
+        "@types/react-dom": "^16.0.6",
+        "typescript": "^2.9.2"
+    }
+}
