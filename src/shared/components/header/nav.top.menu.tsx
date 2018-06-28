@@ -16,7 +16,7 @@ class NavTopMenu extends React.Component{
                             <li className="nav-item">
                                 <a href="index.html" className="navbar-brand nav-link">
                                     <img src="../../../assets/images/ohre.png" width="15%" alt="branding logo"/>
-                                    <h3 className="brand-text">So giá nhanh</h3>
+                                    <h3 className="brand-text">oHRe</h3>
                                 </a>
                             </li>
                             <li className="nav-item d-md-none float-right"><a data-toggle="collapse" data-target="#navbar-mobile10"
@@ -27,12 +27,12 @@ class NavTopMenu extends React.Component{
                     <div className="navbar-container content">
                         <div id="navbar-mobile10" className="collapse navbar-collapse">
                             <ul className="nav navbar-nav mr-auto">
-                                <li className="nav-item"><a className="nav-link active" href="#">Trang chủ</a></li>
+                                <li className="nav-item"><a className="nav-link active" href="#">Home</a></li>
                             </ul>
                             <ul className="nav navbar-nav float-right">
-                                <li className="nav-item"><a className="nav-link" href="#">Về oHRe</a></li>
-                                <li className="nav-item"><a className="nav-link" href="#">Liên hệ</a></li>
-                                <li className="nav-item"><a className="nav-link" href="#">Đóng góp</a></li>
+                                <li className="nav-item"><a className="nav-link" href="#">About Us</a></li>
+                                <li className="nav-item"><a className="nav-link" href="#">Contact Us</a></li>
+                                <li className="nav-item"><a className="nav-link" href="#">Suggestive Product</a></li>
                             </ul>
                         </div>
                     </div>
