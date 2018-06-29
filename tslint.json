@@ -19,6 +19,7 @@
             "static-before-instance",
             "variables-before-functions"
         ],
+        "no-multiple-empty-lines": false,
         "no-arg": true,
         "no-bitwise": false,
         "no-console": [],
@@ -49,7 +50,7 @@
         "triple-equals": [true, "allow-null-check"],
         "variable-name": false,
         "whitespace": [false],
-        "prefer-const": true,
+        "prefer-const": false,
         "arrow-parens": [false],
         "arrow-return-shorthand": [true],
         "import-spacing": true,
@@ -69,6 +70,7 @@
         "space-in-parens": [false]
     },
     "rules": {
+        "no-multiple-empty-lines": false,
         "class-name": true,
         "comment-format": [true, "check-space"],
         "eofline": false,
@@ -108,7 +110,7 @@
         "typedef-whitespace": [false],
         "variable-name": false,
         "whitespace": [false],
-        "prefer-const": true,
+        "prefer-const": false,
         "arrow-parens": [false],
         "arrow-return-shorthand": [true],
         "import-spacing": true,
