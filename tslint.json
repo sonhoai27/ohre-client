@@ -11,7 +11,7 @@
         "eofline": false,
         "forin": true,
         "indent": [true, "spaces", 2],
-        "label-position": true,
+        "label-position": false,
         "max-line-length": [true, 180],
         "member-access": false,
         "member-ordering": [
@@ -22,7 +22,7 @@
         "no-multiple-empty-lines": false,
         "no-arg": true,
         "no-bitwise": false,
-        "no-console": [],
+        "no-console": false,
         "no-construct": true,
         "no-debugger": true,
         "no-duplicate-variable": true,
@@ -47,7 +47,7 @@
         "quotemark": [false],
         "radix": true,
         "semicolon": [false],
-        "triple-equals": [true, "allow-null-check"],
+        "triple-equals": false,
         "variable-name": false,
         "whitespace": [false],
         "prefer-const": false,
@@ -67,16 +67,19 @@
         "cyclomatic-complexity": [true, 40],
         "no-invalid-this": [true],
         "no-magic-numbers": false,
-        "space-in-parens": [false]
+        "space-in-parens": [false],
+        "no-labels": ["error", { "allowLoop": true }],
+        "no-unused-vars": false
     },
     "rules": {
+        "no-unused-vars": false,
         "no-multiple-empty-lines": false,
         "class-name": true,
         "comment-format": [true, "check-space"],
         "eofline": false,
         "forin": true,
         "indent": [true, "spaces", 2],
-        "label-position": true,
+        "label-position": false,
         "max-line-length": [true, 180],
         "member-access": false,
         "member-ordering": [
@@ -86,7 +89,7 @@
         ],
         "no-arg": true,
         "no-bitwise": false,
-        "no-console": [],
+        "no-console": false,
         "no-construct": true,
         "no-debugger": true,
         "no-duplicate-variable": true,
@@ -106,7 +109,7 @@
         "quotemark": [false],
         "radix": true,
         "semicolon": [false],
-        "triple-equals": [true, "allow-null-check"],
+        "triple-equals": false,
         "typedef-whitespace": [false],
         "variable-name": false,
         "whitespace": [false],
@@ -129,7 +132,8 @@
         "no-magic-numbers": false,
         "no-unused-variable": {
             "severity": "error"
-        }
+        },
+        "no-labels": ["error", { "allowLoop": true }]
 
     },
     "rulesDirectory": []

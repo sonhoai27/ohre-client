@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {Link, NavLink} from 'react-router-dom';
 
 class NavTopMenu extends React.Component{
     render(){
@@ -14,10 +15,10 @@ class NavTopMenu extends React.Component{
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <a href="index.html" className="navbar-brand nav-link">
+                                <Link to="/" className="navbar-brand nav-link">
                                     <img src="../../../assets/images/ohre.png" width="15%" alt="branding logo"/>
                                     <h3 className="brand-text white">oHRe</h3>
-                                </a>
+                                </Link>
                             </li>
                             <li className="nav-item d-md-none float-right"><a data-toggle="collapse" data-target="#navbar-mobile10"
                                                                               className="nav-link open-navbar-container"><i
@@ -27,12 +28,13 @@ class NavTopMenu extends React.Component{
                     <div className="navbar-container content">
                         <div id="navbar-mobile10" className="collapse navbar-collapse">
                             <ul className="nav navbar-nav mr-auto">
-                                <li className="nav-item"><a className="nav-link active white" href="#">Home</a></li>
+                                <li className="nav-item"><NavLink className="nav-link white" activeClassName="active" exact to="/">Home</NavLink></li>
+                                <li className="nav-item"><NavLink className="nav-link white" activeClassName="active" exact to="/products">Tất cả sản phẩm</NavLink></li>
                             </ul>
                             <ul className="nav navbar-nav float-right">
-                                <li className="nav-item"><a className="nav-link white" href="#">About Us</a></li>
-                                <li className="nav-item"><a className="nav-link white" href="#">Contact Us</a></li>
-                                <li className="nav-item"><a className="nav-link white" href="#">Suggestive Product</a></li>
+                                <li className="nav-item"><a className="nav-link white" href="#">Về OHre</a></li>
+                                <li className="nav-item"><a className="nav-link white" href="#">Liên hệ</a></li>
+                                <li className="nav-item"><a className="nav-link white" href="#">Gợi ý sản phẩm</a></li>
                             </ul>
                         </div>
                     </div>

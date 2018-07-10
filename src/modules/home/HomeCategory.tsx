@@ -1,6 +1,20 @@
 import * as React from 'react';
-
-class HomeCategory extends React.Component {
+import ModalList from '../../shared/components/modals/ModalList';
+import {connect} from 'react-redux';
+import {reAllCategory} from './ReHome';
+declare const $: any;
+interface Props {
+    resAllCategory:any,
+    reAllCategory: Function
+}
+class HomeCategory extends React.Component<Props, {}> {
+    constructor(props){
+        super(props)
+    }
+    showListCategory = ()=> {
+        this.props.reAllCategory()
+        $("#all-list-category").modal('show')
+    }
     render() {
         return (
             <div className="content-wrapper" style={{background: '#fff'}}>
@@ -60,7 +74,7 @@ class HomeCategory extends React.Component {
                                 </div>
                                 <div className="card">
                                     <div className="card-content">
-                                        <div className="card-body">
+                                        <div className="card-body"  onClick={this.showListCategory}>
                                             <i className="icon-arrow-right"></i>
                                             <h4 className="card-title info">More</h4>
                                             <p>Foods, TV</p>
@@ -71,9 +85,16 @@ class HomeCategory extends React.Component {
                         </div>
                     </div>
                 </div>
+                <ModalList list={this.props.resAllCategory} size="modal-lg"/>
             </div>
         )
     }
 }
 
-export default HomeCategory
+const mapStateToProps = storeState => ({
+    resAllCategory: storeState.reHome.resAllCategory
+});
+const mapDispatchToProps = {
+    reAllCategory
+}
+export default connect(mapStateToProps, mapDispatchToProps)(HomeCategory);

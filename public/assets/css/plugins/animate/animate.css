@@ -1878,16 +1878,16 @@
 @-webkit-keyframes zoomIn {
   from {
     opacity: 0;
-    -webkit-transform: scale3d(0.3, 0.3, 0.3);
-    transform: scale3d(0.3, 0.3, 0.3); }
+    -webkit-transform: scale3d(0.05, 0.05, 0.05);
+    transform: scale3d(0.05, 0.05, 0.05); }
   50% {
     opacity: 1; } }
 
 @keyframes zoomIn {
   from {
     opacity: 0;
-    -webkit-transform: scale3d(0.3, 0.3, 0.3);
-    transform: scale3d(0.3, 0.3, 0.3); }
+    -webkit-transform: scale3d(0.05, 0.05, 0.05);
+    transform: scale3d(0.05, 0.05, 0.05); }
   50% {
     opacity: 1; } }
 

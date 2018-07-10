@@ -2,6 +2,9 @@ import * as React from 'react';
 declare var $: any;
 
 class BackToTop extends React.Component {
+    constructor(props){
+        super(props)
+    }
     componentDidMount() {
         $(window).scroll(function () {
             const scroll = $(window).scrollTop();
@@ -20,7 +23,7 @@ class BackToTop extends React.Component {
     render() {
         return (
             <>
-                <i className="back-to-top la la-arrow-circle-up" onClick={this.backToTop}>
+                <i className="back-to-top la la-arrow-circle-up" style={{display: 'none'}} onClick={this.backToTop}>
                 </i>
             </>
         )

@@ -1,13 +1,15 @@
 import * as React from 'react';
-import {Route, Switch} from 'react-router';
+import {Route} from 'react-router-dom';
 import ProductCategory from './ProductCategory';
+import ProductDetail from './ProductDetail';
 
-const Router = ()=> {
+const ProductRouter = ({match} : { match: any}) => {
+    console.log(match)
     return (
-        <Switch>
-            <Route path="/" component={ProductCategory}/>
-        </Switch>
+        <div>
+            <Route exact path={`${match.url}`} component={ProductCategory}/>
+            <Route path={`${match.url}/detail`} component={ProductDetail}/>
+        </div>
     )
 }
-
-export default Router
+export default ProductRouter

@@ -13,8 +13,8 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": true,
     "strictNullChecks": true,
+    "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
   },
@@ -25,7 +25,6 @@
     "scripts",
     "acceptance-tests",
     "webpacks",
-    "jest",
     "src/setupTests.ts"
   ]
 }
