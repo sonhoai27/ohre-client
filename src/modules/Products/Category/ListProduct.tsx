@@ -1,156 +1,105 @@
 import * as React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { IMAGE_CDN } from '../../../const/API';
+import Image from "../../../shared/components/Image"
+import { connect } from 'react-redux';
+import { reAllProducts } from '../ReProduct';
+import ReactPaginate from 'react-paginate';
 
-class ListProduct extends React.Component {
-    render() {
-        return (
-            <div className="card list-product" style={{background: 'white'}}>
-                <div className="card-body row">
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <Link to="/products/detail">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1" src="../../../assets/images/deals/32gb.jpeg" alt="Card image cap"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
+interface Props {
+    reAllProducts: Function,
+    resAllProducts: any
+}
+class ListProduct extends React.Component<Props, {}> {
+    constructor(props) {
+        super(props)
+    }
+    componentDidMount() {
+        this.props.reAllProducts({
+            current_page: this.calcPage(1),
+            start: -1
+        })
+    }
+    calcPage = (number) => {
+        return (number - 1) * 10
+    }
+    renderListProduct = () => {
+        const products = (this.props.resAllProducts.products ? this.props.resAllProducts.products : [])
+        console.log(products)
+        const listProducts = products
+            .map((itemProduct) => {
+                const number = Number(itemProduct.product_price)
+                const shop = (isNaN(itemProduct.product_url_website) ? (
+                    <div className="info">
+                        <div className="shop" style={{ marginTop: 32, textAlign: 'center' }}>
+                            <img src={IMAGE_CDN + itemProduct.shop_avatar} alt={itemProduct.shop_name} style={{
+                                width: '32%',
+                                display: 'block'
+                            }} />
+                            <p className="btn btn-success btn-sm" style={{
+                                border: 'none',
+                                borderRadius: '4px'
+                            }}>
+                                <a href={itemProduct.product_url_website} target="_blank">Tới nơi bán</a>
+                            </p>
+                        </div>
+                    </div>
+                ) : (<p className="text-center">Có {itemProduct.product_url_website} sản phẩm</p>))
+                return (
+                    <div key={itemProduct.product_id} className="col-sm-4 item"
+                    style={{marginBottom: (isNaN(itemProduct.product_url_website) ? 64 : 32)}}>
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <Link to={`/products/`+(isNaN(itemProduct.product_url_website) ? 'detail' : 'group')+`/`
+                                + itemProduct.product_id + "-" + itemProduct.product_alias}>
+                                    <Image
+                                        width={250}
+                                        height={250}
+                                        src={IMAGE_CDN + itemProduct.product_avatar} />
                                 </Link>
                             </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1"
-                                             src="https://vcdn.tikicdn.com/cache/280x280/ts/product/93/b6/a2/7bf38fe4b03c1615b6fdb8771ecc68c2.jpg"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
+                            <div className="col-sm-12">
+                                <Link to={`/products/`+(isNaN(itemProduct.product_url_website) ? 'detail' : 'group')+`/`
+                                + itemProduct.product_id + "-" + itemProduct.product_alias}>
+                                    <div className="text-center">
+                                        <h4 className="info" style={{
+                                            marginTop: 16
+                                        }}>{itemProduct.product_name}</h4>
+                                        <h5>{number.toLocaleString('vi-VN')}đ</h5>
                                     </div>
-                                </a>
+                                </Link>
+                                {shop}
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1"
-                                             src="https://vcdn.tikicdn.com/cache/280x280/ts/product/6f/56/68/cd8e5e0587610ac4289ef9a9cc9aa174.jpg"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1" src="../../../assets/images/deals/32gb.jpeg" alt="Card image cap"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1"
-                                             src="https://vcdn.tikicdn.com/cache/280x280/media/catalog/product/1/_/1.u2769.d20170624.t084142.649993.jpg"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1"
-                                             src="https://vcdn.tikicdn.com/cache/280x280/ts/product/a0/1e/5a/e2b5921f80d58a10bb9066405adc13db.jpg"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1"
-                                             src="https://vcdn.tikicdn.com/cache/280x280/ts/product/57/88/e3/4c4299085abf744ccf60d5a1a01ac18f.jpg" />
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-3 item">
-                        <div className="card">
-                            <div className="card-content">
-                                <a href="">
-                                    <div className="card-body">
-                                        <img className="card-img img-fluid mb-1" src="../../../assets/images/deals/32gb.jpeg" alt="Card image cap"/>
-                                        <h3 className="card-title" style={{fontSize: '18px', fontWeight: 700}}>Xiaomi Mi4</h3>
-                                        <h6 className="card-title">2.600.00đ</h6>
-                                        <div className="show">
-                                            <h6 className="font-weight-bold">3 cửa hàng</h6>
-                                            <i className="la la-search"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                )
+            })
+        return listProducts
+    }
+    render() {
+        return (
+            <div className="card disable-box-shadow product-detail" style={{ background: 'white' }}>
+                <div className="card-body row">
+                    {this.renderListProduct()}
+                </div>
+                <div className="pg">
+                <ReactPaginate
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={10}
+                    activeClassName={"active"}
+                    subContainerClassName={"page-item"}
+                    containerClassName={"card pagination justify-content-center pagination-separate pagination-curved pagination-flat mb-1"}
+                    pageCount={this.props.resAllProducts.numRows ? Math.ceil(this.props.resAllProducts.numRows/10) : 0}/>
                 </div>
             </div>
         )
     }
 }
 
-export default ListProduct
+const mapStateToProps = storeState => ({
+    resAllProducts: storeState.reProduct.resAllProducts
+});
+const mapDispatchToProps = {
+    reAllProducts
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ListProduct);

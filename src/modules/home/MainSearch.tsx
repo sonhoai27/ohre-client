@@ -55,7 +55,7 @@ class MainSearch extends React.Component<Props, State> {
             const number  = Number(itemProduct.product_price)
             return(
                 <li key={itemProduct.product_id}>
-                    <NavLink to={"./product/detail/"+itemProduct.product_id+"-"+itemProduct.product_alias}>
+                    <NavLink to={"./products/detail/"+itemProduct.product_id+"-"+itemProduct.product_alias}>
                         <h5>{itemProduct.product_name}</h5>
                         <p>{number.toLocaleString('vi-VN')}đ</p>
                         <p className="info">{itemProduct.shop_name}</p>

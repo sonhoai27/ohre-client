@@ -1,7 +1,11 @@
 export default () => next => action => {
     const { type, payload } = action;
     console.groupCollapsed(type);
-    console.log('Payload:', payload);
+    try {
+        console.log('Payload:', payload.data)
+    }catch(e){
+        console.log('Payload:', 'undefined')
+    }
     console.groupEnd();
     return next(action);
 };

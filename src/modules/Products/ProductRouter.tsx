@@ -4,11 +4,10 @@ import ProductCategory from './ProductCategory';
 import ProductDetail from './ProductDetail';
 
 const ProductRouter = ({match} : { match: any}) => {
-    console.log(match)
     return (
         <div>
             <Route exact path={`${match.url}`} component={ProductCategory}/>
-            <Route path={`${match.url}/detail`} component={ProductDetail}/>
+            <Route path={`${match.url}/detail/:idProduct`} component={ProductDetail}/>
         </div>
     )
 }

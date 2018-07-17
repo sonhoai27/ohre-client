@@ -17,17 +17,17 @@ class HomeCategory extends React.Component<Props, {}> {
     }
     render() {
         return (
-            <div className="content-wrapper" style={{background: '#fff'}}>
+            <div className="content-wrapper">
                 <div className="container">
                     <div className="row">
                         <div className="col-sm-12 home-category-title">
                             <h3 className="content-header-title mb-0 d-inline-block">
-                                <span>Category</span>
+                                <span>Danh mục</span>
                             </h3>
                         </div>
                         <div className="col-sm-12">
                             <div className="home-category">
-                                <div className="card">
+                                <div className="card disable-box-shadow">
                                     <div className="card-content">
                                         <div className="card-body">
                                             <i className="icon-screen-smartphone"></i>
@@ -36,7 +36,7 @@ class HomeCategory extends React.Component<Props, {}> {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card">
+                                <div className="card disable-box-shadow">
                                     <div className="card-content">
                                         <div className="card-body">
                                             <i className="icon-screen-tablet"></i>
@@ -45,7 +45,7 @@ class HomeCategory extends React.Component<Props, {}> {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card">
+                                <div className="card disable-box-shadow">
                                     <div className="card-content">
                                         <div className="card-body">
                                             <i className="la la-magic"></i>
@@ -54,7 +54,7 @@ class HomeCategory extends React.Component<Props, {}> {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card">
+                                <div className="card disable-box-shadow">
                                     <div className="card-content">
                                         <div className="card-body">
                                             <i className="la la-stethoscope"></i>
@@ -63,7 +63,7 @@ class HomeCategory extends React.Component<Props, {}> {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card">
+                                <div className="card disable-box-shadow">
                                     <div className="card-content">
                                         <div className="card-body">
                                             <i className="la la-black-tie"></i>
@@ -72,7 +72,7 @@ class HomeCategory extends React.Component<Props, {}> {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card">
+                                <div className="card disable-box-shadow">
                                     <div className="card-content">
                                         <div className="card-body"  onClick={this.showListCategory}>
                                             <i className="icon-arrow-right"></i>

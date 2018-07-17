@@ -1,118 +1,199 @@
 import * as React from 'react';
+declare var $: any;
 import NavTopMenu from '../../shared/components/header/nav.top.menu';
-import { reSearchProduct } from './ReHome';
-import {IMAGE_CDN} from "../../const/API"
+import { reSearchProduct, reGetProductByPage, reSortProductByPrice } from './ReHome';
+import { IMAGE_CDN } from "../../const/API"
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import ClientPagination from '../../shared/components/pagination/ClientPagination';
+import Image from '../../shared/components/Image';
+import delay from './../../utils/delay';
 
 interface Props {
     match?: any,
-    resListProducts:any,
-    reSearchProduct:Function
+    resListProducts: any,
+    reSearchProduct: Function,
+    resTempProductsForPagination: any,
+    reGetProductByPage: Function,
+    currentPage: any,
+    reSortProductByPrice: Function
 }
 interface State {
-    price:any
+    price: any,
+    isSearching: boolean,
+    isShow: boolean,
+    keySearch: any
 }
 class SearchPage extends React.Component<Props, State> {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            price: this.formatNumber('100000')
+            price: this.formatNumber('100000'),
+            isSearching: false,
+            isShow: false,
+            keySearch: ""
         }
     }
-    priceHandle = (e)=> {
+    eventSearch = (e: any) => {
+        const value = e.target.value
         this.setState({
-            price: this.formatNumber(e.target.value)
+            keySearch: value
         })
+        if (!this.state.isShow && value !== '') {
+            this.setState({
+                isSearching: !this.state.isSearching,
+                isShow: !this.state.isShow
+            })
+        } else if (e.keyCode === 13 && this.state.isShow && value !== '') {
+            window.location.assign(`/search/${value}`)
+        } else if (e.keyCode !== 13 && this.state.isShow && value !== '') {
+            delay(() => {
+                window.history.pushState("", "", "/search/"+value);
+                this.props.reSearchProduct(value)
+            }, 1000)
+        }
     }
-    formatNumber = (number:any)=> {
+    closeResultSearch = (e: any) => {
+        if (e.target.value === '') {
+            this.setState({
+                isSearching: false,
+                isShow: false
+            })
+        }
+    }
+    priceHandle = (e) => {
+        const value = e.target.value
+        this.setState({
+            price: this.formatNumber(value)
+        })
+        delay(() => {
+            $(".loading").addClass("active")
+            $(".loading i").addClass("spinner")
+            setTimeout(() => {
+                $(".loading").removeClass("active")
+                $(".loading i").removeClass("spinner")
+            }, 1000)
+            this.props.reSortProductByPrice(value, this.props.resListProducts)
+        }, 500)
+    }
+    formatNumber = (number: any) => {
         const numberLen = number.length
         let listNumber = ''
         let dem = 0
-        for(let index = numberLen - 1; index >= 0; index--){
-            if(dem < 2){
+        for (let index = numberLen - 1; index >= 0; index--) {
+            if (dem < 2) {
                 listNumber = number[index] + listNumber;
                 dem = dem + 1;
-            }else {
-                listNumber = '.'+number[index] + listNumber;
+            } else {
+                listNumber = '.' + number[index] + listNumber;
                 dem = 0;
             }
         }
-        if(listNumber.indexOf('.') === 0){
-            listNumber = listNumber.slice(listNumber.indexOf('.')+1)
+        if (listNumber.indexOf('.') === 0) {
+            listNumber = listNumber.slice(listNumber.indexOf('.') + 1)
         }
         return listNumber
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.reSearchProduct(this.props.match.params.keySearch)
     }
-    renderListProductSearch = ()=> {
-        if(this.props.resListProducts.length !== 0){
-         const li = this.props.resListProducts
-         .map((itemProduct:any, index:number)=> {
-             const number  = Number(itemProduct.product_price)
-             return(
-                 <div key={itemProduct.product_id} className="list-group-item list-group-item-action media">
-                     <NavLink className="media-link" to={"./product/detail/"+itemProduct.product_id+"-"+itemProduct.product_alias}
-                        style={{
-                                display: 'inline-block',
-                                width: '100%'
-                            }}
-                        >
-                        <span className="media-left">
-                                <img className="media-object img-fluid" src={IMAGE_CDN+itemProduct.product_avatar}
-                                alt="Generic placeholder image" style={{width: "100px"}}/>
-                        </span>
-                        <span className="media-body">
-                            <h3>{itemProduct.product_name}</h3>
-                            <h5 className="success">{number.toLocaleString('vi-VN')}đ</h5>
-                        </span>
-                     </NavLink>
-                 </div>
-             )
-         })
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.resListProducts !== this.props.resListProducts) {
+            this.props.reGetProductByPage(this.props.currentPage, nextProps.resListProducts)
+        }
+    }
+    renderListProductSearch = () => {
+        if (this.props.resListProducts.length !== 0) {
+            const li = this.props.resTempProductsForPagination
+                .map((itemProduct: any, index: number) => {
+                    const number = Number(itemProduct.product_price)
+                    return (
+                        <div key={itemProduct.product_id} className="col-sm-12 item" style={{ borderBottom: '1px solid #eee' }}>
+                            <div className="row">
+                                <div className="col-sm-4">
+                                    <NavLink to={"/products/detail/" + itemProduct.product_id + "-" + itemProduct.product_alias}>
+                                        <Image
+                                            width={200}
+                                            height={200}
+                                            src={IMAGE_CDN + itemProduct.product_avatar} />
+                                    </NavLink>
+                                </div>
+                                <div className="col-sm-8">
+                                    <NavLink to={"/products/detail/" + itemProduct.product_id + "-" + itemProduct.product_alias}>
+                                        <h3 className="info">{itemProduct.product_name}</h3>
+                                        <h4>{number.toLocaleString('vi-VN')}đ</h4>
+                                    </NavLink>
+                                    <div className="info">
+                                        <div dangerouslySetInnerHTML={{ __html: itemProduct.product_promo }}
+                                            style={{
+                                                marginTop: 16,
+                                                fontSize: 16,
+                                                color: '#464855'
+                                            }}
+                                        />
+                                        <div className="shop">
+                                            <img src={IMAGE_CDN + itemProduct.shop_avatar} alt={itemProduct.shop_name} style={{
+                                                width: '20%',
+                                                display: 'block'
+                                            }} />
+                                            <p className="btn btn-success" style={{
+                                                border: 'none',
+                                                borderRadius: '4px'
+                                            }}>
+                                                <a href={itemProduct.product_url_website} target="_blank">Tới nơi bán</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
             return li
-        }else {
+        } else {
             return (
                 <h3>Không có.</h3>
             )
         }
-     }
+    }
+    resetSort = () => {
+        window.location.href = window.location.href
+    }
     render() {
-        console.log(this.props.match.params.keySearch)
-        console.log("AA: "+this.state.price)
         return (
             <>
-                <NavTopMenu/>
+                <NavTopMenu isShowing={false} />
                 <div className="app-content content custom-search-page">
                     <div className="content-header row">
                         <div className="container">
                             <div className="row">
-                                <div className="col-sm-2"></div>
-                                <div className="col-sm-8">
+                                <div className="col-sm-3"></div>
+                                <div className="col-sm-6">
                                     <div className="fast-search">
                                         <div className="content-search">
                                             <input type="text" name="input-main-search"
-                                                   placeholder="Bạn muốn tìm gì?"
-                                                   className="form-control"
-                                                   style={
-                                                       {
-                                                           padding: 15,
-                                                           borderRadius: '4px 0px 0px 4px',
-                                                           border: 'unset'
-                                                       }
-                                                   }/>
+                                                placeholder={this.props.match.params.keySearch}
+                                                className="form-control"
+                                                onKeyUp={(e) => this.eventSearch(e)}
+                                                onChange={(e) => this.closeResultSearch(e)}
+                                                style={
+                                                    {
+                                                        padding: 15,
+                                                        borderRadius: '4px 0px 0px 4px',
+                                                        border: 'unset'
+                                                    }
+                                                } />
                                             <i className="la la-search" style={{
                                                 borderRadius: '0px 4px 4px 0px',
                                                 background: 'var(--yellow)',
                                                 padding: '15px',
                                                 color: 'var(--white)'
-                                            }}/>
+                                            }} />
                                         </div>
                                     </div>
-                                    <div className="row" style={{marginTop: 16}}>
-                                        <div className="col-sm-12 list-sort">
+                                    <div className="row" style={{ marginTop: 16 }}>
+                                        {/* <div className="col-sm-12 list-sort">
                                             <select className="form-control" id="category" name="category">
                                                 <option>Danh mục</option>
                                                 <option>Option 1</option>
@@ -129,8 +210,8 @@ class SearchPage extends React.Component<Props, State> {
                                                 <option>Option 4</option>
                                                 <option>Option 5</option>
                                             </select>
-                                        </div>
-                                        <div className="col-sm-12" style={{marginTop: 16}}>
+                                        </div> */}
+                                        <div className="col-sm-12" style={{ marginTop: 16 }}>
                                             <div style={{
                                                 display: 'flex',
                                                 alignItems: 'center',
@@ -138,34 +219,95 @@ class SearchPage extends React.Component<Props, State> {
                                                 color: '#fff'
                                             }}>
                                                 <span>Giá: </span>
-                                                <span>tối ta {this.state.price+'đ'}</span>
+                                                <span>tối ta {this.state.price + 'đ'}</span>
                                             </div>
                                             <input type="range"
-                                                   max={50000000} min={100000}
-                                                   className="slider" style={{width: '100%'}} onChange={(e)=> this.priceHandle(e)}/>
+                                                max={50000000} min={100000}
+                                                className="slider" style={{ width: '100%' }} onChange={(e) => this.priceHandle(e)} />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-sm-2"></div>
+                                <div className="col-sm-3"></div>
                             </div>
                         </div>
                     </div>
                     <div className="content-wrapper">
                         <div className="container">
                             <div className="row">
-                                <div className="col-sm-2">
-                                </div>
                                 <div className="col-sm-8">
-                                    <div className="media-list list-group">
-                                        {this.renderListProductSearch()}
+                                    <div className="card">
+                                        <div className="card-header"
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between'
+                                            }}
+                                        >
+                                            <h5 className="card-title">Có <b>{this.props.resListProducts.length}</b> kết quả.</h5>
+                                            <div>
+                                                <div className="badge badge-pill badge-info hover"
+                                                    onClick={() => this.resetSort()}
+                                                    style={{
+                                                        padding: '8px 16px',
+                                                        fontSize: 14
+                                                    }}
+                                                >
+                                                    Lọc theo giá <i className="ft ft-x white" style={{ marginLeft: 4 }}></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="card-body row list-product-search">
+                                            {this.renderListProductSearch()}
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="col-sm-2">
+                                <div className="col-sm-4">
+                                    <div className="card">
+                                        <div className="card-header">
+                                            <h4 className="card-title">Sản phẩm xem nhiều</h4>
+                                        </div>
+                                        <div className="card-body">
+                                            <p>
+                                                The optional Wi-Fi Access Point allows guests to enter no matter where you are. Control who has access and when.
+                                                You can check if the door is locked from your phone, whether you’re home in bed or across the world.
+                                                </p>
+                                            <p>
+                                                The optional Wi-Fi Access Point allows guests to enter no matter where you are. Control who has access and when.
+                                                You can check if the door is locked from your phone, whether you’re home in bed or across the world.
+                                                </p>
+                                            <p>
+                                                The optional Wi-Fi Access Point allows guests to enter no matter where you are. Control who has access and when.
+                                                You can check if the door is locked from your phone, whether you’re home in bed or across the world.
+                                                </p>
+                                            <p>
+                                                The optional Wi-Fi Access Point allows guests to enter no matter where you are. Control who has access and when.
+                                                You can check if the door is locked from your phone, whether you’re home in bed or across the world.
+                                                </p>
+                                            <p>
+                                                The optional Wi-Fi Access Point allows guests to enter no matter where you are. Control who has access and when.
+                                                You can check if the door is locked from your phone, whether you’re home in bed or across the world.
+                                                </p>
+                                            <p>
+                                                The optional Wi-Fi Access Point allows guests to enter no matter where you are. Control who has access and when.
+                                                You can check if the door is locked from your phone, whether you’re home in bed or across the world.
+                                                </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    <ClientPagination totalPage={Math.floor((this.props.resListProducts.length) / 20)} />
+                                </div>
+                                <div className="col-sm-4">
 
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="loading">
+                    <i className="la la-refresh"></i>
                 </div>
             </>
         )
@@ -173,9 +315,13 @@ class SearchPage extends React.Component<Props, State> {
 }
 
 const mapStateToProps = storeState => ({
-    resListProducts:storeState.reHome.resListProducts
+    resListProducts: storeState.reHome.resListProducts,
+    resTempProductsForPagination: storeState.reHome.resTempProductsForPagination,
+    currentPage: storeState.reHome.currentPage
 });
 const mapDispatchToProps = {
-    reSearchProduct
+    reSearchProduct,
+    reGetProductByPage,
+    reSortProductByPrice
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);

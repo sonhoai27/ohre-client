@@ -24,8 +24,8 @@ class Home extends React.Component<Props, {}> {
     }
     render() {
         return <>
-            <NavTopMenu/>
-            <div className="app-content content">
+            <NavTopMenu isShowing={false}/>
+            <div className="app-content content" style={{background: '#fbfbfc'}}>
                 <MainSearch/>
                 <HomeCategory/>
                 <HotProducts/>

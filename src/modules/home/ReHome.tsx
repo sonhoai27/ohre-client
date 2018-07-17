@@ -5,13 +5,18 @@ import {REQUEST,SUCCESS,FAILURE} from "../../utils/action-type-util"
 export const ACTION_TYPES = {
     API_LOGIN: 'ReHome/API_LOGIN',
     API_ALL_CATEGORY: 'ReHome/API_ALL_CATEGORY',
-    API_SEARCH_PRODUCT: 'ReHome/API_SEARCH_PRODUCT'
+    API_SEARCH_PRODUCT: 'ReHome/API_SEARCH_PRODUCT',
+    PAGINATION_PAGE: 'ReHome/PAGINATION_PAGE',
+    CURRENT_PAGE: 'ReHome/CURRENT_PAGE',
+    SORT_PRODUCT_BY_PRICE: 'ReHome/SORT_PRODUCT_BY_PRICE'
 }
 
 const initialState = {
     responseLogin: {},
     resAllCategory: [],
-    resListProducts: []
+    resListProducts: [],
+    resTempProductsForPagination: [],
+    currentPage: 0
 }
 
 export default (state = initialState, action) => {
@@ -66,6 +71,26 @@ export default (state = initialState, action) => {
                 resListProducts: action.payload.data
             }
         }
+
+        case ACTION_TYPES.PAGINATION_PAGE: {
+            return {
+                ...state,
+                resTempProductsForPagination: action.payload
+            }
+        }
+        case ACTION_TYPES.CURRENT_PAGE: {
+            return {
+                ...state,
+                currentPage: action.payload
+            }
+        }
+        case ACTION_TYPES.SORT_PRODUCT_BY_PRICE: {
+            console.log(action.payload)
+            return {
+                ...state,
+                resTempProductsForPagination: action.payload
+            }
+        }
         default:
             return state;
     }
@@ -106,6 +131,33 @@ export const reSearchProduct = (keySearch) => async dispatch => {
     const result = await dispatch({
         type: ACTION_TYPES.API_SEARCH_PRODUCT,
         payload: axios.get(API_SEARCH_PRODUCT+keySearch)
+    });
+    return result;
+}
+
+export const reGetProductByPage = (page, list) => async dispatch => {
+    await dispatch({
+        type: ACTION_TYPES.CURRENT_PAGE,
+        payload: page
+    })
+    let tempListProduct:any = [...[], ...list]
+    tempListProduct = tempListProduct.splice(20*page,20)
+    const result = await dispatch({
+        type: ACTION_TYPES.PAGINATION_PAGE,
+        payload: tempListProduct
+    });
+    return result;
+}
+
+export const reSortProductByPrice = (price, list) => async dispatch => {
+    let tempListProduct:any = [...[], ...list]
+    const result = await dispatch({
+        type: ACTION_TYPES.SORT_PRODUCT_BY_PRICE,
+        payload: tempListProduct.filter((e,i)=> {
+            return (
+                parseInt(e.product_price,10) <= price
+            )
+        })
     });
     return result;
 }
