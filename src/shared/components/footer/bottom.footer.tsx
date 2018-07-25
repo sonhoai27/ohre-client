@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Link} from 'react-router-dom';
+import AboutUs from '../../ohre/AboutUs';
 
 class BottomFooter extends React.Component{
     render(){
@@ -20,9 +20,6 @@ class BottomFooter extends React.Component{
                                 </li>
                                 <li>
                                     <a href="">Contact</a>
-                                </li>
-                                <li>
-                                    <Link to="./login">Login</Link>
                                 </li>
                                 <li>
                                     <a href="">API</a>
@@ -59,6 +56,7 @@ class BottomFooter extends React.Component{
                         </div>
                     </div>
                 </div>
+                <AboutUs/>
             </div>
         )
     }

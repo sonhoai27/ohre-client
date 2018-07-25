@@ -9,8 +9,12 @@ import SearchPage from './home/SearchPage';
 import {connect} from 'react-redux';
 import {reGetLocation, reLoginGuest} from '../reducers/init';
 import {Storage} from '../utils/storage-util';
-import axios from 'axios'
+// import axios from 'axios'
+// import { API } from '../const/API';
+import ConnectShop from './../shared/components/ConnectShop';
+import axios from '../../node_modules/axios';
 import { API } from '../const/API';
+
 interface Props {
     reGetLocation:Function,
     reLoginGuest: Function,
@@ -36,7 +40,7 @@ class Index extends React.Component <Props, {}>{
             this.checkLoginGuest(nextProps.responseLocation);
         }
     }
-    // ap dung cho ca GUEST la dang nhap bang email
+    // ap dung cho ca GUEST
     private checkLoginGuest = (location)=> {
         if(Storage.local.get('access_token') === undefined){
            this.props.reLoginGuest({
@@ -58,6 +62,7 @@ class Index extends React.Component <Props, {}>{
                     <Route path="/search/:keySearch" component={SearchPage}/>
                     <Route path="/share-product"/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/redirect/:idProduct" component={ConnectShop} />
                     <PrivateRouter path="/my-profile" component={Profile}/>
                 </Switch>
             </Router>

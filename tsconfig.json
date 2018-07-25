@@ -16,7 +16,8 @@
     "strictNullChecks": true,
     "noImplicitAny": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "downlevelIteration": true
   },
   "exclude": [
     "public",

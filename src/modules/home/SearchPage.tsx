@@ -4,7 +4,7 @@ import NavTopMenu from '../../shared/components/header/nav.top.menu';
 import { reSearchProduct, reGetProductByPage, reSortProductByPrice } from './ReHome';
 import { IMAGE_CDN } from "../../const/API"
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import ClientPagination from '../../shared/components/pagination/ClientPagination';
 import Image from '../../shared/components/Image';
 import delay from './../../utils/delay';
@@ -48,7 +48,7 @@ class SearchPage extends React.Component<Props, State> {
             window.location.assign(`/search/${value}`)
         } else if (e.keyCode !== 13 && this.state.isShow && value !== '') {
             delay(() => {
-                window.history.pushState("", "", "/search/"+value);
+                window.history.pushState("", "", "/search/" + value);
                 this.props.reSearchProduct(value)
             }, 1000)
         }
@@ -108,11 +108,45 @@ class SearchPage extends React.Component<Props, State> {
             const li = this.props.resTempProductsForPagination
                 .map((itemProduct: any, index: number) => {
                     const number = Number(itemProduct.product_price)
+                    const shop = (isNaN(itemProduct.product_url_website) ? (
+                        <div className="info">
+                            <div className="shop">
+                                <img src={IMAGE_CDN + itemProduct.shop_avatar} alt={itemProduct.shop_name} style={{
+                                    width: '20%',
+                                    display: 'block'
+                                }} />
+                                <p className="btn btn-success btn-sm" style={{
+                                    border: 'none',
+                                    borderRadius: '4px'
+                                }}>
+                                    <Link to={'/redirect/'+itemProduct.product_id}>Tới nơi bán</Link>
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+
+                            <div style={{display: 'flex'}} className="shop">
+                                <p style={{
+                                    marginRight: 8,
+                                    fontSize: 16,
+                                    color: '#464855'
+                                }}>Có {itemProduct.product_url_website} sản phẩm</p>
+                                <p className="btn btn-success btn-sm" style={{
+                                    border: 'none',
+                                    borderRadius: '4px'
+                                }}>
+                                    <a href={`/products/group/${itemProduct.product_alias}`}
+                                    target="_blank">So sánh</a>
+                                </p>
+                            </div>
+                        ))
                     return (
                         <div key={itemProduct.product_id} className="col-sm-12 item" style={{ borderBottom: '1px solid #eee' }}>
                             <div className="row">
                                 <div className="col-sm-4">
-                                    <NavLink to={"/products/detail/" + itemProduct.product_id + "-" + itemProduct.product_alias}>
+                                    <NavLink to={`/products/` + (isNaN(itemProduct.product_url_website) ? 'detail' : 'group') + `/`
+                                        + (isNaN(itemProduct.product_url_website) ? itemProduct.product_id + "-" : '')
+                                        + itemProduct.product_alias}>
                                         <Image
                                             width={200}
                                             height={200}
@@ -120,7 +154,9 @@ class SearchPage extends React.Component<Props, State> {
                                     </NavLink>
                                 </div>
                                 <div className="col-sm-8">
-                                    <NavLink to={"/products/detail/" + itemProduct.product_id + "-" + itemProduct.product_alias}>
+                                    <NavLink to={`/products/` + (isNaN(itemProduct.product_url_website) ? 'detail' : 'group') + `/`
+                                        + (isNaN(itemProduct.product_url_website) ? itemProduct.product_id + "-" : '')
+                                        + itemProduct.product_alias}>
                                         <h3 className="info">{itemProduct.product_name}</h3>
                                         <h4>{number.toLocaleString('vi-VN')}đ</h4>
                                     </NavLink>
@@ -132,18 +168,7 @@ class SearchPage extends React.Component<Props, State> {
                                                 color: '#464855'
                                             }}
                                         />
-                                        <div className="shop">
-                                            <img src={IMAGE_CDN + itemProduct.shop_avatar} alt={itemProduct.shop_name} style={{
-                                                width: '20%',
-                                                display: 'block'
-                                            }} />
-                                            <p className="btn btn-success" style={{
-                                                border: 'none',
-                                                borderRadius: '4px'
-                                            }}>
-                                                <a href={itemProduct.product_url_website} target="_blank">Tới nơi bán</a>
-                                            </p>
-                                        </div>
+                                        {shop}
                                     </div>
                                 </div>
                             </div>
@@ -235,7 +260,7 @@ class SearchPage extends React.Component<Props, State> {
                         <div className="container">
                             <div className="row">
                                 <div className="col-sm-8">
-                                    <div className="card">
+                                    <div className="card disable-box-shadow">
                                         <div className="card-header"
                                             style={{
                                                 display: 'flex',
@@ -264,7 +289,9 @@ class SearchPage extends React.Component<Props, State> {
                                 <div className="col-sm-4">
                                     <div className="card">
                                         <div className="card-header">
-                                            <h4 className="card-title">Sản phẩm xem nhiều</h4>
+                                            <h3 className="text-bold-500">
+                                                <span className="title-line-before">Có thể bạn quan tâm</span>
+                                            </h3>
                                         </div>
                                         <div className="card-body">
                                             <p>

@@ -3,7 +3,10 @@ import NavTopMenu from '../../shared/components/header/nav.top.menu';
 import SideLeftMenu from './Category/sideLeftMenu'
 import ListProduct from './Category/ListProduct';
 import BottomFooter from '../../shared/components/footer/bottom.footer';
-class ProductCategory extends React.Component {
+interface Props {
+    match?:any
+}
+class ProductCategory extends React.Component<Props, {}> {
     render(){
         return(
             <>
@@ -13,10 +16,10 @@ class ProductCategory extends React.Component {
                         <div className="content-header row"></div>
                         <div className="content-body row">
                             <div className="col-sm-3">
-                                <SideLeftMenu/>
+                                <SideLeftMenu match={this.props.match}/>
                             </div>
                             <div className="col-sm-9">
-                                <ListProduct/>
+                                <ListProduct match={this.props.match}/>
                             </div>
                         </div>
                     </div>

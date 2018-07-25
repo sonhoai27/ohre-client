@@ -1,14 +1,16 @@
 import axios from 'axios'
 import {API} from '../../const/API'
 import {REQUEST,SUCCESS,FAILURE} from "../../utils/action-type-util"
-
+import {Storage} from "../../utils/storage-util"
 export const ACTION_TYPES = {
     API_LOGIN: 'ReHome/API_LOGIN',
     API_ALL_CATEGORY: 'ReHome/API_ALL_CATEGORY',
     API_SEARCH_PRODUCT: 'ReHome/API_SEARCH_PRODUCT',
     PAGINATION_PAGE: 'ReHome/PAGINATION_PAGE',
     CURRENT_PAGE: 'ReHome/CURRENT_PAGE',
-    SORT_PRODUCT_BY_PRICE: 'ReHome/SORT_PRODUCT_BY_PRICE'
+    SORT_PRODUCT_BY_PRICE: 'ReHome/SORT_PRODUCT_BY_PRICE',
+    API_RECOMMEND: 'ReHome/API_RECOMMEND',
+    PAGINATION_RECOMMEND: 'ReHome/PAGINATION_RECOMMEND'
 }
 
 const initialState = {
@@ -16,7 +18,9 @@ const initialState = {
     resAllCategory: [],
     resListProducts: [],
     resTempProductsForPagination: [],
-    currentPage: 0
+    currentPage: 0,
+    resRecommed: [],
+    listTempRecommed: []
 }
 
 export default (state = initialState, action) => {
@@ -72,6 +76,24 @@ export default (state = initialState, action) => {
             }
         }
 
+        // recommend
+        case REQUEST(ACTION_TYPES.API_RECOMMEND): {
+            return {
+                ...state
+            }
+        }
+        case FAILURE(ACTION_TYPES.API_RECOMMEND): {
+            return {
+                ...state
+            }
+        }
+        case SUCCESS(ACTION_TYPES.API_RECOMMEND): {
+            return {
+                ...state,
+                resRecommed: action.payload.data
+            }
+        }
+
         case ACTION_TYPES.PAGINATION_PAGE: {
             return {
                 ...state,
@@ -85,10 +107,16 @@ export default (state = initialState, action) => {
             }
         }
         case ACTION_TYPES.SORT_PRODUCT_BY_PRICE: {
-            console.log(action.payload)
             return {
                 ...state,
                 resTempProductsForPagination: action.payload
+            }
+        }
+
+        case ACTION_TYPES.PAGINATION_RECOMMEND: {
+            return {
+                ...state,
+                listTempRecommed: action.payload
             }
         }
         default:
@@ -99,7 +127,7 @@ export default (state = initialState, action) => {
 const API_LOGIN = API+"auth/login/"
 const API_ALL_CATEGORY = API+"menu/child/"
 const API_SEARCH_PRODUCT = API+"product/search/algorithm/"
-
+const API_RECOMMEND = API+'collection/recommend/all/'
 export const reLogin = (formLogin) => async dispatch => {
     const result = await dispatch({
         type: ACTION_TYPES.API_LOGIN,
@@ -114,6 +142,19 @@ export const reLogin = (formLogin) => async dispatch => {
             headers: {
                 'Content-Type': 'application/json'
             }
+        })
+    });
+    return result;
+};
+
+export const reRecommed = () => async dispatch => {
+    const date = new Date()
+    const result = await dispatch({
+        type: ACTION_TYPES.API_RECOMMEND,
+        payload: axios.post(API_RECOMMEND, {
+            idUser: (Storage.local.get("access_token") ? Storage.local.get("access_token") : null),
+            month: (date.getMonth() + 1),
+            year: date.getFullYear()
         })
     });
     return result;
@@ -158,6 +199,15 @@ export const reSortProductByPrice = (price, list) => async dispatch => {
                 parseInt(e.product_price,10) <= price
             )
         })
+    });
+    return result;
+}
+
+export const rePaginationRecommend = (currentPage, list) => async dispatch => {
+    let tempList:any = [...[], ...list]
+    const result = await dispatch({
+        type: ACTION_TYPES.PAGINATION_RECOMMEND,
+        payload: tempList.splice(0, parseInt(currentPage, 10)*8)
     });
     return result;
 }

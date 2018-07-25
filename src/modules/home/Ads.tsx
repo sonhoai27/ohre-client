@@ -9,12 +9,12 @@ class Ads extends React.Component{
                         <div className="col-sm-4 title-form-contact">
                             <i className="la la-line-chart icon-chart"></i>
                             <div className="title">
-                                Contact<br/>advertising
+                                Liên hệ<br/>quảng cáo
                             </div>
                         </div>
                         <div className="col-sm-4" style={{display: 'flex', alignItems: 'center'}}>
                             <div className="form-contact" style={{width: '100%'}}>
-                                <input type="text" className="form-control" placeholder="Your email" name="contact-email"/>
+                                <input type="text" className="form-control" placeholder="Email của bạn" name="contact-email"/>
                                 <i className="la la-inbox"></i>
                             </div>
                         </div>

@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import initStore from './configs/store';
 import registerServiceWorker from './registerServiceWorker';
 import BackToTop from './shared/components/BackToTop';
+import ButtonHistory from './shared/components/history/ButtonHistory';
+import {Storage} from "./utils/storage-util"
 
 const store = initStore()
 ReactDOM.render(
@@ -12,6 +14,7 @@ ReactDOM.render(
         <>
             <Index />
             <BackToTop/>
+            {Storage.local.get("access_token") ? <ButtonHistory/> : ''}
         </>
     </Provider>,
   document.getElementById('root') as HTMLElement
