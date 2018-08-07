@@ -160,7 +160,7 @@ class ProductGroup extends React.Component<Props, State>{
                                                 border: 'none',
                                                 borderRadius: '4px'
                                             }}>
-                                                <a href={itemProduct.product_url_website} target="_blank">Tới nơi bán</a>
+                                                <Link to={'/redirect/' + itemProduct.product_id}>Tới nơi bán</Link>
                                             </p>
                                         </div>
                                     </div>

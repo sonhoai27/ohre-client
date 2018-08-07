@@ -9,10 +9,9 @@ import SearchPage from './home/SearchPage';
 import {connect} from 'react-redux';
 import {reGetLocation, reLoginGuest} from '../reducers/init';
 import {Storage} from '../utils/storage-util';
-// import axios from 'axios'
+import axios from 'axios'
 // import { API } from '../const/API';
 import ConnectShop from './../shared/components/ConnectShop';
-import axios from '../../node_modules/axios';
 import { API } from '../const/API';
 
 interface Props {
@@ -42,7 +41,7 @@ class Index extends React.Component <Props, {}>{
     }
     // ap dung cho ca GUEST
     private checkLoginGuest = (location)=> {
-        if(Storage.local.get('access_token') === undefined){
+        if(Storage.local.get('access_token') == undefined){
            this.props.reLoginGuest({
                 user_IP: location.ip,
                 user_browser_info: navigator.userAgent,
